@@ -1,0 +1,357 @@
+<div class="body">
+
+    <div class="container">
+        <h2 style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; text-align: center;">
+            Consulta / Seguimiento del Vale</h2>
+        <div class="header">
+
+            <div class="header-actions">
+                <button matFab extended (click)="backToRequisitions()">
+                    <mat-icon>keyboard_backspace</mat-icon>
+                    Regresar a las requisiciones
+                </button>
+
+                <mat-form-field>
+                    <mat-label>Estado del vale</mat-label>
+                    <mat-select [(value)]="statusSelected" (selectionChange)="changeStatus()"
+                        [disabled]="statusDisabled">
+                        @for (item of status; track item) {
+                        <mat-option [value]="item">{{item}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+                @if(statusCurrent !== "Finalizado"){
+                <button matButton="filled" class="btn-save" (click)="saveVoucher()" @fadeInOut>Guardar</button>
+                }
+            </div>
+            <div class="header-2">
+                <fieldset class="header-text">
+                    <legend>Datos Generales</legend>
+                    <div>
+                        <p>N° Requisicón: <span>{{requisition.id_requisition}}</span></p>
+                        <p>Fecha: <span>{{formatDateEs(requisition.date)}}</span></p>
+                        <p>Empresa: <span>{{requisition.enterprise_name}}</span></p>
+                        <p>Rancho: <span>{{requisition.ranch_name}}</span></p>
+                        <p>Prioridad: <span>{{getPriority(requisition.priority)}}</span></p>
+                        <p>Comentario:
+                            <span>
+                                @if (requisition.comment == "") {
+                                Sin comentarios
+                                } @else {
+                                {{requisition.comment}}
+                                }
+                            </span>
+                        </p>
+                        @if(voucherInput && voucherInput.id_input){
+                        <p style="color: blue;">Vale de entrada: {{voucherInput.id_input}}</p>
+                        }
+                    </div>
+                </fieldset>
+                <div class="header-supplier">
+                    <mat-form-field>
+                        <mat-label>N° Vale</mat-label>
+                        <mat-select [(value)]="voucherSelected" (selectionChange)="changeVoucher()">
+                            @for (item of vouchers; track item) {
+                            <mat-option [value]="item">{{item.toString()| factorVoucher}}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+
+                    @if (statusSelected === 'Finalizado' && statusCurrent !== "Finalizado") {
+                    <div @fadeInOut>
+                        <mat-form-field appearance="outline" style="margin-left:20px">
+                            <mat-label>N° Factura</mat-label>
+                            <input matInput type="text" [formControl]="formNFactura" autocomplete="off">
+                            @if (formNFactura.value) {
+                            <button matSuffix matIconButton aria-label="Clear" (click)="formNFactura.setValue('')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            }
+                        </mat-form-field>
+                        <br>
+                        <mat-form-field appearance="outline" style="margin-bottom:20px">
+                            <mat-label>Fecha de factura</mat-label>
+                            <input matInput [matDatepicker]="pickerI1" [formControl]="dateControlInvoice">
+                            <mat-hint>MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="pickerI1"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerI1></mat-datepicker>
+                        </mat-form-field>
+                        @if (!credit) {
+                        <mat-form-field appearance="outline" style="margin-left: 20px;">
+                            <mat-label>Fecha de pago</mat-label>
+                            <input matInput [matDatepicker]="picker" [formControl]="dateControl">
+                            <mat-hint>MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                        }
+                        <br>
+                        <mat-checkbox class="example-margin" [(ngModel)]="credit">Credito</mat-checkbox>
+                        <br>
+                        <mat-form-field floatLabel="always" style="margin-top: 10px;">
+                            <mat-label>Total</mat-label>
+                            <input matInput type="number" placeholder="0" [(ngModel)]="total" />
+                            <span matTextPrefix>$&nbsp;</span>
+                            <mat-hint>{{total | currency}}</mat-hint>
+                        </mat-form-field>
+                    </div>
+                    }
+
+                    @if(statusDisabled && voucherSelected !== ''){
+                    <div @fadeInOut>
+                        <mat-form-field class="example-form-field" appearance="outline" style="margin-left:20px">
+                            <mat-label>N° Factura</mat-label>
+                            <input matInput type="text" [formControl]="formNFactura" autocomplete="off">
+                            @if (formNFactura.value) {
+                            <button matSuffix matIconButton aria-label="Clear" (click)="formNFactura.setValue('')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            }
+                        </mat-form-field>
+                        <button matIconButton style="margin-left: 20px; background-color: green; color: white;"
+                            (click)="saveDate()"><mat-icon>check</mat-icon></button>
+                        <br>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Fecha de pago</mat-label>
+                            <input matInput [matDatepicker]="pickerI1" [formControl]="dateControl">
+                            <mat-hint>MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="pickerI1"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerI1></mat-datepicker>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" style="margin-left:20px">
+                            <mat-label>Fecha de factura</mat-label>
+                            <input matInput [matDatepicker]="picker" [formControl]="dateControlInvoice">
+                            <mat-hint>MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+
+                        <br>
+
+                        <mat-form-field floatLabel="always" style="margin-top: 10px;">
+                            <mat-label>Total</mat-label>
+                            <input matInput type="number" placeholder="0" [(ngModel)]="total" />
+                            <span matTextPrefix>$&nbsp;</span>
+                            <mat-hint>{{total | currency}}</mat-hint>
+                        </mat-form-field>
+                    </div>
+                    }
+
+                    @if(statusCurrent === 'En proceso'){
+                    <button matMiniFab style="margin-left: 20px;" (click)="changeSupplier()">
+                        <mat-icon>store</mat-icon>
+                    </button>
+                    }
+                    @if((statusCurrent === 'En proceso' || statusCurrent === 'Comprado')
+                    && !isAgro
+                    && !vehicles
+                    && requisition.category != 'Maquinaria y equipo agrícola (Stock)'){
+                    <button matMiniFab style="margin-left: 20px;" aria-label="Editar numero de vale"
+                        (click)="changeNumberVoucher()">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="table">
+            @if (products) {
+            <table mat-table [dataSource]="dataSource" matSort @fadeInOut>
+
+                <ng-container matColumnDef="date">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+                    <td mat-cell *matCellDef="let element"> {{formatDateEs(element.date)}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripción </th>
+                    <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="amount">
+                    <th mat-header-cell *matHeaderCellDef> Cantidad </th>
+                    <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+                </ng-container>
+
+                @if(arrived2){
+                <ng-container matColumnDef="arrived2">
+                    <th mat-header-cell *matHeaderCellDef> Llegaron… </th>
+                    <td mat-cell *matCellDef="let element" style="color: green; font-weight: 600;">
+                        <p style="font-size: large;">{{element.arrived}}</p>
+                    </td>
+                </ng-container>
+                }
+
+                <ng-container matColumnDef="supplier">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Proveedor </th>
+                    <td mat-cell *matCellDef="let element" class="supplier"> {{element.supplier_name}} </td>
+                </ng-container>
+
+                <!-- <ng-container matColumnDef="voucher">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> N° Vale </th>
+                <td mat-cell *matCellDef="let element"> {{element.id_voucher}} </td>
+            </ng-container> -->
+
+                @if (arrived) {
+                <ng-container matColumnDef="arrived">
+                    <th mat-header-cell *matHeaderCellDef>
+                        @if (isAgro) {
+                        ¿Encargado?
+                        } @else {
+                        ¿Llegó?
+                        }
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <mat-checkbox [checked]="getChecked(element.id_product)"
+                            (change)="update($event.checked, element.id_product)">
+                        </mat-checkbox>
+                    </td>
+                </ng-container>
+                }
+
+                @if (amount) {
+                <ng-container matColumnDef="howMany">
+                    <th mat-header-cell *matHeaderCellDef> ¿Cuántos? </th>
+                    <td mat-cell *matCellDef="let element">
+                        <input type="number" max="{{element.amount}}" min="0"
+                            (input)="onAmountChange($event, element.id_product)" class="input-how-many"
+                            [value]="getValue(element.id_product)">
+                    </td>
+                </ng-container>
+                }
+
+                @if(prices){
+                <ng-container matColumnDef="prices">
+                    <th mat-header-cell *matHeaderCellDef> Precio Unitario </th>
+                    <td mat-cell *matCellDef="let element">
+                        <input type="number" min="0" [(ngModel)]="element.unitary_price" placeholder="0">
+                    </td>
+                </ng-container>
+                }
+
+                <tr mat-header-row *matHeaderRowDef="columns" style="background-color: rgb(223, 223, 223);"></tr>
+                <tr mat-row *matRowDef="let row; columns: columns"
+                    [ngClass]="getRowClass(row.id_product) === 'row-hability' ? (enterprise | slugify) : 'row-disabled'">
+                    ></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 15]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+            }
+
+            @if(vehicles){
+            <table mat-table [dataSource]="dataSource2" matSort @fadeInOut>
+
+                <ng-container matColumnDef="date">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+                    <td mat-cell *matCellDef="let element"> {{formatDateEs(element.date)}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="economic_number">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Numero economico </th>
+                    <td mat-cell *matCellDef="let element"> {{element.economic_number}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="type">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
+                    <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="brand">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Marca </th>
+                    <td mat-cell *matCellDef="let element"> {{element.bran}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="model">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Modelo </th>
+                    <td mat-cell *matCellDef="let element"> {{element.model}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="services">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Servicios </th>
+                    <td mat-cell *matCellDef="let element">
+                        @for(item of element.services; track item){
+                        <p>* {{item.name}}</p>
+                        }
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="columnsV"></tr>
+                <tr mat-row *matRowDef="let row; columns: columnsV" [ngClass]="getRowClass(row.id_product)"></tr>
+            </table>
+            <mat-paginator #paginator2 [pageSizeOptions]="[5, 10, 15]" [pageSize]="10"
+                showFirstLastButtons></mat-paginator>
+            }
+        </div>
+        @if((statusSelected === "Finalizado" || statusCurrent === "Finalizado") && isAgro){
+        <div @fadeInOut>
+            <div class="inputs-fiscal">
+
+                <section class="input-iva">
+                    <mat-checkbox class="example-margin" [(ngModel)]="IVA">IVA</mat-checkbox>
+                </section>
+
+                <mat-form-field class="example-form-field" appearance="outline">
+                    <mat-label>ISR</mat-label>
+                    <input matInput type="number" [formControl]="formISR" autocomplete="off">
+                    @if (formISR.value) {
+                    <button matSuffix matIconButton aria-label="Clear" (click)="formISR.setValue(0)">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                    }
+                    <mat-hint>{{formISR.value| currency}}</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="example-form-field" appearance="outline">
+                    <mat-label>IEPS</mat-label>
+                    <input matInput type="number" [formControl]="formIEPS" autocomplete="off">
+                    @if (formIEPS.value) {
+                    <button matSuffix matIconButton aria-label="Clear" (click)="formIEPS.setValue(0)">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                    }
+                    <mat-hint>{{formIEPS.value| currency}}</mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+        }
+
+        @if (statusSelected == "Comprado" || statusSelected == "Finalizado") {
+        <div class="upload-container">
+            <div>
+                <button matButton="outlined" (click)="fileInput.click()">Anexar imagen</button>
+                <button matButton="filled" (click)="onSaveImage()" [disabled]="!selectedFile">Guardar imagen</button>
+                <input type="file" #fileInput (change)="onFileSelected($event)" hidden />
+
+                @if (previewUrl) {
+                <div class="preview">
+                    <img [src]="previewUrl" (error)="handleErrorImage($event)" alt="Vista previa de la imagen" />
+                </div>
+                }
+            </div>
+        </div>
+        }
+    </div>
+    <div class="comments">
+        <h3>Comentarios</h3>
+        <div class="text">
+            @for (item of comments; track $index) {
+            <p>{{item}}</p>
+            <mat-divider></mat-divider>
+            }
+        </div>
+        <div class="input-text">
+            <mat-form-field appearance="outline">
+                <mat-label>Comentario</mat-label>
+                <textarea matInput [value]="comment" (input)="updateComment($event)"></textarea>
+            </mat-form-field>
+            <button matMiniFab (click)="addComment()">
+                <mat-icon>send</mat-icon>
+            </button>
+        </div>
+    </div>
+</div>

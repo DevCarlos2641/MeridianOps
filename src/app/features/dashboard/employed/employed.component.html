@@ -1,0 +1,58 @@
+<div class="body">
+    <div class="header">
+        <button matFab extended (click)="newEmployed()">
+            <mat-icon>account_circle</mat-icon>
+            Nuevo empleado
+        </button>
+    </div>
+    <div style="width: 100%;">
+
+        <div class="container">
+
+            <div class="user-card">
+                @if (currentEmployed) {
+                <div class="card-content">
+                    <h3>{{currentEmployed.name}}</h3>
+                    <p><span>Username: </span>{{currentEmployed.username}}</p>
+                    <p><span>Empresa: </span>{{currentEmployed.enterprise}}</p>
+                    <p><span>Posición: </span>{{currentEmployed.position}}</p>
+                    <p><span>Email: </span> {{currentEmployed.email}}</p>
+                    <p><span>Teléfono: </span> {{currentEmployed.phone}}</p>
+                    <p><span>Antigüedad: </span> {{currentEmployed.seniority}}</p>
+                    <div style="text-align: end;">
+                        <button matMiniFab (click)="updateEmployed(currentEmployed)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                }
+            </div>
+
+            <div class="user-list">
+                <mat-form-field appearance="outline">
+                    <mat-label>Buscar por nombre</mat-label>
+                    <input matInput placeholder="Nombre" [formControl]="filtre">
+                    <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+                <div class="list">
+                    @if(filteredEmployed$ | async; as employes){
+                    @for (item of employes; track $index) {
+                    <div class="item" (click)="onSelectEmployed(item)">
+                        <div style="text-align: start;">
+                            <p>{{item.name}}</p>
+                            <p>{{item.position}}</p>
+                        </div>
+                        <div style="text-align: end;">
+                            <p>{{item.enterprise}}</p>
+                            <p>{{item.seniority}}</p>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    }
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

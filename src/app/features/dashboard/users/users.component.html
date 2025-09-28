@@ -1,0 +1,58 @@
+<div class="body">
+    <div class="header">
+        <button matFab extended (click)="newUser()">
+            <mat-icon>account_circle</mat-icon>
+            Nuevo usuario
+        </button>
+    </div>
+    <div style="width: 100%;">
+
+        <div class="container">
+
+            <div class="user-card">
+                @if (currentUser) {
+                <div class="card-content">
+                    <h3>{{currentUser.name}}</h3>
+                    <p><span>Empresa: </span>{{currentUser.enterprise_name}}</p>
+                    <p><span>Rancho: </span>{{currentUser.ranch_name}}</p>
+                    <p><span>Posición: </span>{{currentUser.position}}</p>
+                    <p><span>Email: </span> {{currentUser.email}}</p>
+                    <p><span>Teléfono: </span> {{currentUser.phone}}</p>
+                    <p><span>Rol: </span> {{getRole(currentUser.role)}}</p>
+                    <!-- <div style="text-align: end;">
+                        <button matMiniFab>
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </div> -->
+                </div>
+                }
+            </div>
+
+            <div class="user-list">
+                <mat-form-field appearance="outline">
+                    <mat-label>Buscar por nombre</mat-label>
+                    <input matInput placeholder="Nombre" [formControl]="filtre">
+                    <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+                <div class="list">
+                    @if(filteredUsers$ | async; as users){
+                    @for (item of users; track $index) {
+                    <div class="item" (click)="onSelectUser(item)">
+                        <div style="text-align: start;">
+                            <p>{{item.name}}</p>
+                            <p>{{item.position}}</p>
+                        </div>
+                        <div style="text-align: end;">
+                            <p>{{item.email}}</p>
+                            <p>{{item.phone}}</p>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    }
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

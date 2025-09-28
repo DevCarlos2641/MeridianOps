@@ -1,0 +1,61 @@
+<div class="body">
+    <p class="title">Nuevo usuario</p>
+    <form [formGroup]="userForm" (ngSubmit)="submitForm()">
+        <mat-form-field>
+            <mat-label>Empresa</mat-label>
+            <mat-select (selectionChange)="changeEnterprise($event.value)" [(value)]="currentEnterprise">
+                @for (item1 of enterprises; track item1) {
+                <mat-option [value]="item1">{{ item1.name }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Rancho</mat-label>
+            <mat-select [(value)]="currentRanch">
+                @for (item2 of ranchs; track item2) {
+                <mat-option [value]="item2">{{ item2.name }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <br>
+
+        <mat-form-field>
+            <mat-label>Nombre Completo</mat-label>
+            <input matInput autocomplete="off" formControlName="name">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Posición</mat-label>
+            <input matInput autocomplete="off" formControlName="position">
+        </mat-form-field>
+
+        <br>
+
+        <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput autocomplete="off" type="email" formControlName="email">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Teléfono</mat-label>
+            <input matInput autocomplete="off" type="number" formControlName="phone">
+        </mat-form-field>
+
+        <br>
+
+        <mat-form-field>
+            <mat-label>Rol</mat-label>
+            <mat-select [(value)]="currentRol">
+                @for (item of roles; track item) {
+                <mat-option [value]="item">{{ item }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <br>
+
+        <button mat-raised-button color="primary" type="submit">Guardar</button>
+    </form>
+</div>

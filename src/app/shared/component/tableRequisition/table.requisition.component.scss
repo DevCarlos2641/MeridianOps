@@ -1,0 +1,9 @@
+.rowProduct {
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.3s ease;
+}
+
+.rowProduct:hover {
+    background-color: rgb(211, 211, 211);
+}

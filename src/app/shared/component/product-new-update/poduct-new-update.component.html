@@ -1,0 +1,97 @@
+<div class="body">
+    @if (update) {
+    <div style="text-align: center;">
+        <img [src]="previewUrl" (click)="fileInput.click()" (error)="setDefaultImage()" width="300px">
+        <input type="file" #fileInput style="display: none;" (change)="onFileSelected($event)" hidden />
+    </div>
+    }
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form-altas">
+
+        <mat-form-field>
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="name" />
+            @if(form.controls.name.touched && form.controls.name.invalid){
+            <mat-error>
+                Campo requerido
+            </mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Descripción</mat-label>
+            <input matInput formControlName="description" />
+            @if(form.controls.description.touched){
+            <mat-error>
+                Campo requerido
+            </mat-error>
+            }
+        </mat-form-field>
+
+        <br>
+
+        <mat-form-field>
+            <mat-label>Applicación</mat-label>
+            <input type="text" matInput formControlName="application" [matAutocomplete]="autoApplys" />
+            <mat-autocomplete #autoApplys="matAutocomplete">
+                @for(option of filteredApplys$ | async; track option){
+                <mat-option [value]="option">
+                    {{ option }}
+                </mat-option>
+                }
+            </mat-autocomplete>
+            @if(form.controls.application.touched && form.controls.application.invalid){
+            <mat-error>
+                Campo requerido
+            </mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Unidad de medida</mat-label>
+            <input type="text" matInput formControlName="unit" [matAutocomplete]="autoUnit" />
+            <mat-autocomplete #autoUnit="matAutocomplete">
+                @for(option of filteredUnits$ | async; track option){
+                <mat-option [value]="option">
+                    {{ option }}
+                </mat-option>
+                }
+            </mat-autocomplete>
+            @if(form.controls.unit.touched && form.controls.name.invalid){
+            <mat-error>
+                Campo requerido
+            </mat-error>
+            }
+        </mat-form-field>
+
+        @if(isAgro){
+        <mat-form-field>
+            <mat-label>Casa comercial</mat-label>
+            <input type="text" matInput [formControl]="formControl" [matAutocomplete]="autoHouse" />
+            <mat-autocomplete #autoHouse="matAutocomplete">
+                @for(option of filteredHouse$ | async; track option){
+                <mat-option [value]="option">
+                    {{ option }}
+                </mat-option>
+                }
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-radio-group [(ngModel)]="type" [ngModelOptions]="{standalone: true}">
+            <mat-radio-button value="agroquimico">Agroquimico</mat-radio-button>
+            <mat-radio-button value="fertilizante">Fertilizante</mat-radio-button>
+        </mat-radio-group>
+        }
+        <br>
+        <!-- <mat-form-field>
+            <mat-label>Cantidad</mat-label>
+            <input matInput formControlName="amount" type="number" />
+            @if(form.controls.amount.touched && form.controls.amount.invalid){
+            <mat-error>
+                Campo requerido
+            </mat-error>
+            }
+        </mat-form-field> -->
+        <br>
+        <button matButton="filled" color="primary" type="submit" [disabled]="form.invalid">Guardar</button>
+    </form>
+</div>

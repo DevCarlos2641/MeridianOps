@@ -1,0 +1,32 @@
+.body{
+    padding: 10px;
+}
+
+.avocats{
+    background-color: #6f4e3741;
+}
+.avoago{
+    background-color: #a020f03a;
+}
+.meridian-ops{
+    background-color: #0c4f913d;
+}
+.agronev{
+    background-color: #24ca3d41;
+}
+
+.row-product{
+    color: black;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.row-product:hover{
+    background-color: transparent;
+    cursor: pointer;
+    user-select: none;
+}
+
+.product-follow{
+    cursor: pointer;
+    user-select: none;
+}

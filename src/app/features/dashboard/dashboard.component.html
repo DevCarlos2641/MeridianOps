@@ -1,0 +1,82 @@
+<mat-toolbar class="toolbar" [ngStyle]="{'background-color': selectedColor}" [style.background-color]="btnColor">
+    <button matIconButton class="icon-menu" (click)="drawer.toggle()">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <span>MeridianOps</span>
+    <span>{{data.user.role | roleName}}</span>
+    <span class="example-spacer"></span>
+    <span class="text_user">Bienvenido {{data.user.name}}</span>
+    @if(nBadge > 0){
+    <button matIconButton matBadge="1" [matMenuTriggerFor]="menu" class="profile">
+        <mat-icon>notifications_active</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+        @for (item of itemExpiration; track $index) {
+            <button mat-menu-item (click)="showInfo(item)">
+                <p style="white-space: pre-line; word-wrap: break-word; margin: 0; padding: 0;">{{item.title}}</p>
+            </button>
+        }
+    </mat-menu>
+    }
+    <button matIconButton class="profile" routerLink="./usuario">
+        <mat-icon> person_pin</mat-icon>
+    </button>
+    <button matIconButton class="logout" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+    </button>
+</mat-toolbar>
+
+<mat-drawer-container class="container" autosize>
+
+    <mat-drawer #drawer class="menu" mode="side" opened>
+        <div class="logo-container">
+            <div class="logo">
+                <img src="https://api.meridianops.com/logos/logo.png">
+            </div>
+        </div>
+
+        <mat-divider style="margin-left: 30px; margin-right: 30px;"></mat-divider>
+
+        @if(option1){
+        <button matButton="filled" (click)="routerByRole()" [style.background-color]="btnColor">Compras</button><br>
+        }
+        @if(option2){
+        <button matButton="filled" routerLink="./inventario">Inventario</button><br>
+        }
+        <!-- @if(option3){
+         
+        <button matButton="filled">Monitoreo / Reportes</button><br>
+        } -->
+        @if(option4){
+        <button matButton="filled" routerLink="./asistencias">Asistencias</button><br>
+        }
+        @if(option5){
+        <button matButton="filled" routerLink="./usuarios">Usuarios</button><br>
+        }
+        @if(option6){
+        <button matButton="filled" routerLink="./empleados">Empleados</button><br>
+        }
+        @if(option7){
+        <button matButton="filled" routerLink="./vehiculos-maquinaria">Vehiculos y maquinaria</button><br>
+        }
+        @if(option8){
+        <button matButton="filled" routerLink="./resguardo">Vales de resguardo</button><br>
+        }
+        @if(option9){
+        <button matButton="filled" routerLink="./tomar-asistencia">Tomar asistencia</button><br>
+        }
+        @if(option10){
+        <button matButton="filled" routerLink="./reportes">Reportes</button><br>
+        }
+        @if(option11){
+        <button matButton="filled" routerLink="./autorizar">Autorizar</button><br>
+        }
+        <!-- @if(option12){
+            <button matButton="filled" (click)="downloadDB()">Copia de seguridad</button><br>
+        } -->
+    </mat-drawer>
+
+    <div class="content">
+        <router-outlet></router-outlet>
+    </div>
+</mat-drawer-container>

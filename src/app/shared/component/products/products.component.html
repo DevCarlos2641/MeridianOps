@@ -1,0 +1,70 @@
+<div class="tab-products">
+    <div class="container1">
+        @if(this.typeData !== "newProducts"){
+        <mat-form-field class="example-form-field">
+            <mat-label>Filtrar</mat-label>
+            <input matInput type="text" [formControl]="searchControl" autocomplete="off">
+            @if (searchControl.value) {
+            <button matSuffix matIconButton aria-label="Clear" (click)="searchControl.setValue('')">
+                <mat-icon>close</mat-icon>
+            </button>
+            }
+        </mat-form-field>
+        }
+        @if(showRanchs){
+
+        @if(currentRanch){
+        <h3>Inventario del rancho: <span>{{currentRanch.name}}</span></h3>
+        }
+
+        <mat-form-field>
+            <mat-label>Selecione un rancho</mat-label>
+            <mat-select [(value)]="currentRanch" (selectionChange)="changeProducts()">
+                @for (item of ranchs; track item) {
+                <mat-option [value]="item">{{item.name}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        }
+    </div>
+
+    <div class="mat-elevation-z8">
+        <table #table mat-table [dataSource]="dataSource" matSort>
+
+            @for (item of columns; track $index) {
+            <ng-container matColumnDef="{{item}}">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="title">
+                    {{ getTitle(item) }}
+                </th>
+
+                @if (item === 'amount') {
+                <td mat-cell *matCellDef="let product" class="amount">
+                    {{ product[item] }}
+                </td>
+                } @else if (deleteRow && item === 'Borrar') {
+                <td mat-cell *matCellDef="let product" class="td-delete" (click)="deleteItem(product.id)">
+                    <mat-icon class="icon">delete_forever</mat-icon>
+                </td>
+                } @else if (item === 'amount_input') {
+                <td mat-cell *matCellDef="let product" (click)="handleUpdateProduct(product)" class="amount_input">
+                    {{ product[item] }}
+                </td>
+                } @else if (item === 'expiration'){
+                <td mat-cell *matCellDef="let product">
+                    <input type="date" [(ngModel)]="product.expiration" class="date-input-simple">
+                </td>
+                } @else {
+                <td mat-cell *matCellDef="let product">
+                    {{ product[item] }}
+                </td>
+                }
+            </ng-container>
+            }
+
+            <tr mat-header-row *matHeaderRowDef="columns"></tr>
+            <tr mat-row *matRowDef="let row; columns: columns" class="tableArticle" (click)="handleAddNewProduct(row)">
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 15]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+    </div>
+</div>

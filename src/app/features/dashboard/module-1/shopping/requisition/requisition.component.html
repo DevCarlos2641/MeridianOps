@@ -1,0 +1,270 @@
+<div class="body">
+    <mat-tab-group>
+        <mat-tab label="Requisición">
+            <div class="table">
+                <div class="products">
+                    <div class="table-header">
+                        <mat-form-field class="example-form-field">
+                            <mat-label>Filtrar</mat-label>
+                            <input matInput type="text" [formControl]="searchControl" autocomplete="off">
+                            @if (searchControl.value) {
+                            <button matSuffix matIconButton aria-label="Clear" (click)="searchControl.setValue('')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            }
+                        </mat-form-field>
+
+                        <mat-form-field style="width: 270px;">
+                            <mat-label>Categorías</mat-label>
+                            <mat-select [(value)]="categorySelected" (selectionChange)="changeStatus()">
+                                @for (item of categories; track item) {
+                                <mat-option [value]="item">{{item}}</mat-option>
+                                }
+                            </mat-select>
+                            <mat-hint style="text-align: center;">{{categorySelected}}</mat-hint>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-label>N° Requisición</mat-label>
+                            <input matInput type="text" [(ngModel)]="nRequisition">
+                        </mat-form-field>
+                    </div>
+
+                    @if (products) {
+                    <app-tabla-p-v [columns]="columns" [dataSource]="dataSource"
+                        (rowClick)="addProductToRequisition($event)">
+                    </app-tabla-p-v>
+                    <!-- <table #table mat-table [dataSource]="dataSource" matSort #sort1="matSort">
+
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+                            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="application">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Applicación </th>
+                            <td mat-cell *matCellDef="let element"> {{element.application}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="unit">
+                            <th mat-header-cell *matHeaderCellDef> Unidad de medida </th>
+                            <td mat-cell *matCellDef="let element"> {{element.unit}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="description">
+                            <th mat-header-cell *matHeaderCellDef> Descripción </th>
+                            <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columns" (dblclick)="addProductToRequisition(row)"
+                            class="rowProduct"></tr>
+                    </table> -->
+                    }
+
+                    @if(vehicles){
+                    <app-tabla-p-v [columns]="columnsV" [dataSource]="dataSource3"
+                        (rowClick)="addVehicleToRequisition($event)">
+                    </app-tabla-p-v>
+                    <!-- <table #table mat-table [dataSource]="dataSource2" matSort #sort1="matSort">
+
+                        <ng-container matColumnDef="enterprise">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Empresa </th>
+                            <td mat-cell *matCellDef="let element"> {{element.enterprise_name}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="type">
+                            <th mat-header-cell *matHeaderCellDef> Tipo </th>
+                            <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="brand">
+                            <th mat-header-cell *matHeaderCellDef> Marca </th>
+                            <td mat-cell *matCellDef="let element"> {{element.brand}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="model">
+                            <th mat-header-cell *matHeaderCellDef> Modelo </th>
+                            <td mat-cell *matCellDef="let element"> {{element.model}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="active">
+                            <th mat-header-cell *matHeaderCellDef> Activo </th>
+                            <td mat-cell *matCellDef="let element"> {{element.active}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="status">
+                            <th mat-header-cell *matHeaderCellDef> Estado </th>
+                            <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columns" (dblclick)="addVehicleToRequisition(row)"
+                            class="rowProduct"></tr>
+                    </table> -->
+                    }
+                </div>
+                <div class="cart">
+                    @if(products){<p style="text-align: center;">Debe de agregar comentarios a todos los productos</p>}
+                    @else{<p style="text-align: center;">Agregar a cada vehículo lo que se ocupe</p>}
+                    <div class="cart-container">
+                        @if(products){
+                        @if(requisition$ | async; as values){
+                        @for (item of values; track $index){
+                        <div class="card">
+                            <div class="item_title">
+                                <button matSuffix mat-icon-button class="comment"
+                                    (click)="addCommentToProduct(item.id)">
+                                    <mat-icon> add_comment</mat-icon>
+                                </button>
+                                <span>{{item.name}}</span>
+                                <button matSuffix mat-icon-button (click)="deleteProductRequisition(item.id)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </div>
+                            <div class="card_content">
+                                <div class="card_text">
+                                    @if(item.application === '' || !item.application){
+                                    <p>.</p>
+                                    } @else {
+                                    <p> {{item.application}} </p>
+                                    }
+                                    <p> {{item.description}} </p>
+                                </div>
+                                <div class="card_actions">
+                                    <span>Cantidad</span> <br>
+                                    <input type="number" [value]="item.amount"
+                                        (input)="onAmountChange($event, item.id)">
+                                </div>
+                            </div>
+                        </div>
+                        }
+                        }
+                        }
+                        @else {
+                        @if(vehiclesReq$ | async; as values){
+                        @for (item of values; track $index){
+                        <div class="card">
+                            <div class="item_title">
+                                <span>{{item.type}}</span>
+                                <button matSuffix mat-icon-button (click)="deleteVehicleRequisition(item.id)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </div>
+                            <div class="card_content">
+                                <div class="card_text">
+                                    <p> {{item.brand}} </p>
+                                    @if(item.serie_n){
+                                    <p> {{item.serie_n}} </p>
+                                    } @else {
+                                    <p>{{item.model}}</p>
+                                    }
+                                </div>
+                                <div class="card_actions">
+                                    <button matMiniFab (click)="addItems(item.id)">
+                                        <mat-icon style="color: black;">build</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                        }
+                        }
+                    </div>
+                    <div class="btn-save">
+                        <button matButton="filled" class="clean" (click)="cleanrequisition()">Limpiar</button>
+                        @if(products){
+                        <button matButton="filled" [disabled]="(requisition$ | async)?.length === 0"
+                            (click)="saveRequisition()">Guardar</button>
+                        } @else {
+                        <button matButton="filled" [disabled]="(vehiclesReq$ | async)?.length === 0"
+                            (click)="saveRequisitionVehicles()">Guardar</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="Historial">
+            <div class="table_history">
+
+                <div class="table-header">
+                    <mat-form-field class="example-form-field">
+                        <mat-label>Filtrar</mat-label>
+                        <input matInput type="text" [formControl]="searchControl2" autocomplete="off">
+                        @if (searchControl.value) {
+                        <button matSuffix matIconButton aria-label="Clear" (click)="searchControl.setValue('')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        }
+                    </mat-form-field>
+                    <form [formGroup]="rangeForm">
+                        <mat-form-field>
+                            <mat-label>Rango de fechas</mat-label>
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate placeholder="Inicio" formControlName="start">
+                                <input matEndDate placeholder="Fin" formControlName="end">
+                            </mat-date-range-input>
+                            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker (closed)="onDateRangeSelected()"></mat-date-range-picker>
+                        </mat-form-field>
+                    </form>
+                </div>
+
+                <table #table2 mat-table [dataSource]="dataSource2" matSort #sort2="matSort">
+
+                    <ng-container matColumnDef="delete">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Eliminar </th>
+                        <td mat-cell *matCellDef="let element" class="delete_item">
+                            <mat-icon (click)="deleteItem(element.id, element.id_requisition)">close</mat-icon>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="date">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de inicio </th>
+                        <td mat-cell *matCellDef="let element">{{formatDateEs(element.date)}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="id_requisition">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> N° Requisición </th>
+                        <td mat-cell *matCellDef="let element"> {{element.id_requisition}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef> Estado </th>
+                        <td mat-cell *matCellDef="let element"> {{getStatus(element.status)}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="priority">
+                        <th mat-header-cell *matHeaderCellDef> Prioridad </th>
+                        <td mat-cell *matCellDef="let element"> {{getPriority(element.priority)}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="comment">
+                        <th mat-header-cell *matHeaderCellDef> Commentarios </th>
+                        <td mat-cell *matCellDef="let element">
+                            @if (element.comment == "") {
+                            Sin comentarios
+                            } @else {
+                            {{element.comment}}
+                            }
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="cart">
+                        <th mat-header-cell *matHeaderCellDef> Productos </th>
+                        <td mat-cell *matCellDef="let element" (click)="showProducts(element)" class="cart_item">
+                            <mat-icon>shopping_cart</mat-icon>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="columns2"></tr>
+                    <tr mat-row *matRowDef="let row; columns: columns2" class="row"></tr>
+                </table>
+                <mat-paginator #paginator2 [pageSizeOptions]="[5, 10, 15]" [pageSize]="10"
+                    showFirstLastButtons></mat-paginator>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

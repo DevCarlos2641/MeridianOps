@@ -1,0 +1,26 @@
+.body{
+    margin: 30px;
+    height: auto;
+    max-height: 80vh;
+    text-align: center;
+}
+
+.items{
+    text-align: center;
+    height: 50vh;
+    overflow-y: auto;
+}
+
+.input{
+    margin-top: 30px;
+    align-items: center;
+    mat-form-field{
+        width: 300px;
+    }
+}
+
+.item{
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+}

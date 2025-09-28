@@ -1,0 +1,58 @@
+.body {
+    padding: 30px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.avocats {
+    background-color: #6f4e3741;
+}
+
+.avoago {
+    background-color: #a020f03a;
+}
+
+.meridian-ops {
+    background-color: #0c4f913d;
+}
+
+.agronev {
+    background-color: #24ca3d41;
+}
+
+.icon-products {
+    text-align: center;
+
+    mat-icon {
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+}
+
+.icon-products:hover {
+    mat-icon {
+        transform: scale(1.3);
+    }
+}
+
+.icon-auth {
+    color: black;
+    text-align: center;
+    background-color: rgb(2, 201, 91);
+    border-radius: 3px;
+
+    mat-icon {
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+}
+
+.icon-auth:hover {
+    mat-icon {
+        color: white;
+        transform: scale(1.3);
+    }
+}

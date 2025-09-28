@@ -1,0 +1,40 @@
+<div class="body">
+    <h2>Analisis de asistencias</h2>
+    <div class="header">
+        <mat-form-field>
+            <mat-label>Selecione un rancho</mat-label>
+            <mat-select [(value)]="currentRanch">
+                @for (item of ranchs; track item) {
+                <mat-option [value]="item">{{item.name}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Metrica</mat-label>
+            <mat-select [(value)]="currentMetric">
+                @for (item of metrics; track item) {
+                <mat-option [value]="item">{{item.type}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Fechas</mat-label>
+            <mat-select [(value)]="currentDate">
+                @for (item of dates; track item) {
+                <mat-option [value]="item">{{item.rango}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div>
+        <button matButton="filled" (click)="trigger()">Generar</button>
+    </div>
+
+    @if(grafic){
+    <div class="grafics" style="height: 500px;">
+        <canvas baseChart [data]="barChartData" [options]="barChartOptions" [type]="'bar'"></canvas>
+    </div>
+    }
+</div>

@@ -1,0 +1,106 @@
+<div class="body">
+    <div class="table_history">
+        <div class="header">
+
+            <mat-form-field class="example-form-field">
+                <mat-label>Filtrar</mat-label>
+                <input matInput type="text" [formControl]="searchControl" autocomplete="off">
+                @if (searchControl.value) {
+                <button matSuffix matIconButton aria-label="Clear" (click)="searchControl.setValue('')">
+                    <mat-icon>close</mat-icon>
+                </button>
+                }
+            </mat-form-field>
+
+            <h3>Requisiciones pendientes por completar</h3>
+
+            <button matButton="filled" class="type" (click)="navigateToHistory()">Historial</button>
+            
+        </div>
+
+        <table mat-table [dataSource]="dataSource" matSort>
+
+            <ng-container matColumnDef="delete">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Eliminar </th>
+                <td mat-cell *matCellDef="let element" class="delete_item">
+                    <mat-icon (click)="deleteItem(element.id, element.id_requisition)">close</mat-icon>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de inicio </th>
+                <td mat-cell *matCellDef="let element">{{formatDateEs(element.date)}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: center;"> N° Requisición </th>
+                <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.id_requisition}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="category">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Categoria </th>
+                <td mat-cell *matCellDef="let element"> {{element.category}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="enterprise">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Empresa </th>
+                <td mat-cell *matCellDef="let element" class="enterprise"> {{element.enterprise_name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="ranch">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Rancho </th>
+                <td mat-cell *matCellDef="let element"> {{element.ranch_name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+                <td mat-cell *matCellDef="let element"> {{getStatus(element.status)}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="priority">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Prioridad </th>
+                <td mat-cell *matCellDef="let element"> {{getPriority(element.priority)}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="comment">
+                <th mat-header-cell *matHeaderCellDef> Comentarios </th>
+                <td mat-cell *matCellDef="let element">
+                    @if (element.comment == "") {
+                    Sin comentarios
+                    } @else {
+                    {{element.comment}}
+                    }
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="products">
+                <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Productos </th>
+                <td mat-cell *matCellDef="let element" class="icon-products"> <mat-icon
+                        (click)="showProducts(element)">shopping_cart</mat-icon> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="voucher">
+                <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Vale </th>
+                <td mat-cell *matCellDef="let element" class="id_voucher" style="text-align: center;"
+                    (click)="navigateToAssign(element)">
+                    @if(element.ids_voucher){
+                        {{element.ids_voucher}}
+                    }@else{
+                    Asignar
+                    }
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="follow-up">
+                <th mat-header-cell *matHeaderCellDef> Consulta </th>
+                <td mat-cell *matCellDef="let element" class="product-follow" (click)="navigateToFollow(element)">
+                    Consulta...
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columns"></tr>
+            <tr mat-row *matRowDef="let row; columns: columns" class="row-product" class="{{row.enterprise_name | slugify}}"  @rowAnim></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 15]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+    </div>
+</div>
