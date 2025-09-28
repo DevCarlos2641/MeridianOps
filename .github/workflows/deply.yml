@@ -3,7 +3,7 @@
 # on:
 #   push:
 #     branches:
-#       - dev  # o tu rama principal
+#       - dev
 
 # jobs:
 #   build-and-deploy:
