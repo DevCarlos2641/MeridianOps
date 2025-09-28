@@ -1,0 +1,48 @@
+.table{
+    margin: 30px;
+}
+
+.header-table{
+    display: flex;
+    justify-content: space-between;
+}
+
+.row:hover{
+    cursor: pointer;
+    background-color: white;
+}
+
+.row-product{
+    color: black;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.row-product:hover{
+    background-color: transparent;    
+}
+
+.avocats{
+    background-color: #6f4e3741;
+}
+.avoago{
+    background-color: #a020f03a;
+}
+.meridian-ops{
+    background-color: #0c4f913d;
+}
+.agronev{
+    background-color: #24ca3d41;
+}
+
+.item-car{
+    mat-icon{
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+}
+
+.item-car:hover{
+    color: green;
+    mat-icon{
+        transform: scale(1.2);
+    }
+}

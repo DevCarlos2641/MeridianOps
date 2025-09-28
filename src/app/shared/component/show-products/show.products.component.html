@@ -1,0 +1,58 @@
+<div class="body">
+    <div>
+        <p style="text-align: center; font-weight: 550;">Requisición N° <span>{{requisition.id_requisition}}</span></p>
+        <div class="header">
+            <div>
+                <p>Fecha: <span>{{formatDateEs(requisition.date)}}</span></p>
+                <p>Empresa: <span>{{requisition.enterprise_name}}</span></p>
+                <p>Rancho: <span>{{requisition.ranch_name}}</span></p>
+            </div>
+            <div>
+                <p>Estado: <span>{{getStatus(requisition.status)}}</span></p>
+                <p>Prioridad: <span>{{getPriority(requisition.priority)}}</span></p>
+                <p>Comentario:
+                    <span>
+                        @if (requisition.comment == "") {
+                        Sin comentarios
+                        } @else {
+                        {{requisition.comment}}
+                        }
+                    </span>
+                </p>
+            </div>
+        </div>
+
+        <div class="container">
+            <div>
+                @if(products[0].id_product){
+                @for (item of products; track $index) {
+                <div class="product-card">
+                    <div class="product-header">
+                        <h2>{{item.name}}</h2>
+                        <span class="quantity">Cantidad: {{item.amount}}</span>
+                    </div>
+                    <p class="description">{{item.description_pd}}</p>
+                    <p class="description">{{item.description_rq}}</p>
+                </div>
+                }
+                } @else {
+                @for (item of products; track $index) {
+                <div class="product-card">
+                    <div class="product-header">
+                        <h2>{{item.type}} - {{item.economic_number}}</h2>
+                    </div>
+                    <p class="description">{{item.brand}}</p>
+                    <p class="description">{{item.model}}</p>
+                    <div class="servicios" style="margin-top: 20px;">
+                        @for (item2 of item.services; track $index) {
+                        <mat-divider></mat-divider>
+                        <p>{{item2.name}}</p>
+                        }
+                    </div>
+                </div>
+                }
+                }
+            </div>
+        </div>
+    </div>
+</div>

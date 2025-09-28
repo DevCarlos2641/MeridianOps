@@ -1,0 +1,29 @@
+.body {
+    padding: 30px;
+    text-align: center;
+}
+
+.user-list {
+    cursor: pointer;
+    user-select: none;
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 20px;
+
+    .list {
+        max-height: 60vh;
+        overflow-y: auto;
+    }
+
+    .item {
+        border-radius: 10px;
+        padding: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+        transition: background 0.3s ease;
+    }
+
+    .item:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+}

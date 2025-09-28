@@ -1,0 +1,58 @@
+.tab-products {
+    margin: 20px;
+    width: auto;
+    height: auto;
+    overflow: auto;
+
+    .title {
+        text-align: center;
+    }
+}
+
+.amount {
+    background-color: rgb(85, 241, 85);
+    font-weight: 500;
+    color: black;
+    text-align: center;
+}
+
+.amount_input {
+    background-color: rgb(25, 161, 252);
+    font-weight: 500;
+    color: black;
+    text-align: center;
+}
+
+.container1 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tableArticle {
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.tableArticle:hover {
+    cursor: pointer;
+    background-color: rgb(211, 211, 211);
+}
+
+.td-delete {
+    .icon {
+        font-size: 25px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+}
+
+.td-delete:hover {
+    .icon {
+        transform: scale(1.3);
+    }
+}
+
+.date-input-simple {
+    width: 120px;
+    font-size: 12px;
+    padding: 2px 4px;
+}

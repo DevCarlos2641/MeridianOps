@@ -1,0 +1,134 @@
+<div class="body">
+    <div class="container2">
+        <div class="header">
+            <button matButton="outlined" (click)="back()">
+                <mat-icon>keyboard_backspace</mat-icon>
+                Regresar
+            </button>
+            <p>Asignar un vale de resguardo</p>
+        </div>
+        <div style="display: flex; justify-content: space-evenly; align-items: center;">
+            <div>
+                <h4>Información del vale</h4>
+                @if (vocuher$ | async; as vh) {
+                <p>Estado: {{vh.status | statusVoucher}}</p>
+                <p>Fecha: {{vh.date | fechaEs}}</p>
+                <p>Comentario: {{comment}}</p>
+                }
+            </div>
+            <div>
+                <button matButton="outlined" (click)="generatePDF()">Generar reporte</button>
+                <br>
+                <br>
+                <button matButton="filled" (click)="saveVoucher()">Guardar vale de resguardo</button>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: center;">
+            <div class="voucher" #content id="content">
+                <div class="voucher-header">
+                    <img [src]="urlImage" width="200px">
+                    <p style="font-weight: 600;">VALE DE RESGUARDO</p>
+                </div>
+                <div class="employed">
+                    <div style="display: flex;">
+                        <div>
+                            <p class="p1">Nombre: </p>
+                            <p class="p1">Puesto: </p>
+                            <p class="p1">Fecha: </p>
+                        </div>
+                        <div>
+                            <p class="p2">{{employed.name}}</p>
+                            <p class="p2">{{employed.position}}</p>
+                            <p class="p2">{{date | fechaEs}}</p>
+                        </div>
+                    </div>
+                    @if (pds$ | async; as pds) {
+                    <p style="font-weight: 600; margin-right: 20px;">Folio: {{folio}}</p>
+                    }
+                </div>
+                <div class="product">
+                    <table>
+                        <tr class="headerTr">
+                            <th>PZ</th>
+                            <th>ARTICULO</th>
+                            <th>MARCA/MODELO</th>
+                            <th>IME/SERIE</th>
+                            <th>PROVEEDOR</th>
+                            <th>FACTURA</th>
+                            <th style="width: 100px;">IMPORT. U</th>
+                        </tr>
+                        @for (item of pds; track $index) {
+                        <tr>
+                            <td><input type="number" style="width: 50px;" [(ngModel)]="item.pz" (input)="updatePrices()"></td>
+                            <td>{{item.name}} {{item.description}}</td>
+                            <td><input type="text" [(ngModel)]="item.modelo"></td>
+                            <td><input type="text" [(ngModel)]="item.serie"></td>
+                            <td>@if (vocuher$ | async; as vh) {
+                                {{vh.name_supplier}}
+                                }</td>
+                            <td>
+                                @if (vocuher$ | async; as vh) {
+                                {{vh.id_invoice}}
+                                }
+                            </td>
+                            <td>{{(item.unitary_price * 1.16) | currency}}</td>
+                        </tr>
+                        }
+                    </table>
+                </div>
+                <p class="closing">
+                    Al firmar el presente vale me comprometo a resguardar y dar un buen uso al equipo que me ha sido
+                    asignado.
+                    Así mismo a utilizar dicho equipo EXCLUSIVAMENTE para actividades que mi puesto requiere. En caso de
+                    robo,
+                    extravío o daño al equipo, se hará responsable por una cantidad de:
+                    <span style="font-weight: 600;">{{total | currency}}</span>
+                </p>
+                <div class="firmas">
+                    <div>
+                        <p>FIRMA DE QUIEN RECIBE</p>
+                        <br>
+                        <br>
+                        <p style="font-size: small; border-top: 1px solid black;">{{employed.name}}</p>
+                    </div>
+                    <div>
+                        <p>FIRMA DE QUIEN ENTREGA</p>
+                        <br>
+                        <br>
+                        <p style="font-size: small; border-top: 1px solid black;">LORENA DE LA TORRE MARTINEZ</p>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="section2">
+            <button matFab extended (click)="searchEmployed()">
+                <mat-icon>person</mat-icon>
+                Buscar Empleado
+            </button>
+        </div>
+        <div class="section1">
+            @if (pds$ | async; as pds) {
+            @if (pds.length > 0) {
+            @for (item of pds; track item.id) {
+            <div class="product-card" (click)="selectProduct(item)" @fadeInOut>
+                <div class="product-info">
+                    <h2>{{ item.name }}</h2>
+                    <p class="codigo">Descripción: {{ item.description }}</p>
+                </div>
+                <div class="product-precio">
+                    {{item.unitary_price | currency}}
+                </div>
+            </div>
+            }
+            } @else {
+            <div>No hay datos</div>
+            }
+            } @else {
+            <div>Cargando...</div>
+            }
+        </div>
+    </div>
+</div>

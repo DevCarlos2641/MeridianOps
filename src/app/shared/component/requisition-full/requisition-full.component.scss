@@ -1,0 +1,74 @@
+.body {
+    padding: 30px;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.id_voucher{
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 450;
+    user-select: none;
+}
+
+.id_voucher:hover{
+    color: rgb(0, 0, 255);
+}
+
+.icon-products {
+    text-align: center;
+    mat-icon {
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+}
+
+.icon-products:hover {
+    mat-icon {
+        transform: scale(1.3);
+    }
+}
+
+.row-product{
+    color: black;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.row-product:hover{
+    background-color: transparent;    
+}
+
+.product-follow{
+    cursor: pointer;
+    user-select: none;
+}
+
+.avocats{
+    background-color: #c9a9929f;
+}
+.avoago{
+    background-color: #d091f78c;
+}
+.meridian-ops{
+    background-color: #0c4f914d;
+}
+.agronev{
+    background-color: #9beea793;
+}
+
+.delete_item{
+    mat-icon{
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+}
+
+.delete_item:hover{
+    mat-icon{
+        cursor: pointer;
+        color: red;
+        transform: scale(1.2);
+    }
+}

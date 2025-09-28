@@ -1,0 +1,27 @@
+<div class="body">
+    <div class="user-list">
+        <mat-form-field appearance="outline">
+            <mat-label>Buscar por nombre</mat-label>
+            <input matInput placeholder="Nombre" [formControl]="filtre">
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        <div class="list">
+            @if(filteredEmployed$ | async; as employes){
+            @for (item of employes; track $index) {
+            <div class="item" (click)="onSelectEmployed(item)">
+                <div style="text-align: start;">
+                    <p>{{item.name}}</p>
+                    <p>{{item.position}}</p>
+                </div>
+                <div style="text-align: end;">
+                    <p>{{item.enterprise}}</p>
+                    <p>{{item.seniority}}</p>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+            }
+            }
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,351 @@
+<div class="body">
+    <mat-tab-group>
+
+        <mat-tab label="Productos" class="mat-tab">
+            <products-component [typeData]="dataProducts"></products-component>
+        </mat-tab>
+
+        @if(tabInAndOut){
+        <mat-tab label="Altas - Salidas (Agroquimicos)">
+            <ng-template matTabContent>
+                @if(!altas && !bajas){
+                <div class="sections">
+                    <div class="section1" (click)="onInput()">
+                        <h3>Entrada de mercancía</h3>
+                        <img src="assets/input.png" width="100px">
+                    </div>
+                    <div class="section1" (click)="onOutput()">
+                        <h3>Salida de mercancía</h3>
+                        <img src="assets/output.png" width="100px">
+                    </div>
+                </div>
+                }
+
+                @if (altas) {
+                <div class="altas" @fadeInOut>
+                    <h2 style="text-align: center;">Ingreso de mercancia</h2>
+                    <div class="content">
+                        <div class="container">
+                            <div class="altas-header">
+                                <div class="searchRq">
+                                    <div class="search_inputs">
+                                        <button matButton="filled" (click)="downloadReq()">Ver
+                                            Pendientes</button><br><br>
+                                        <mat-form-field class="example-form-field" appearance="outline">
+                                            <mat-label>Buscar requisición</mat-label>
+                                            <input matInput type="number" [formControl]="searchRq" autocomplete="off">
+                                            @if (searchRq.value) {
+                                            <button matSuffix matIconButton aria-label="Clear"
+                                                (click)="searchRq.setValue(''); resetRequisition();">
+                                                <mat-icon>close</mat-icon>
+                                            </button>
+                                            }
+                                        </mat-form-field>
+                                        <button matMiniFab (click)="searchRequisition()">
+                                            <mat-icon>search</mat-icon>
+                                        </button>
+                                        <br>
+                                        @if(ids.length > 0){
+                                        <mat-form-field>
+                                            <mat-label>Selecione uno</mat-label>
+                                            <mat-select [(value)]="idSelected" (selectionChange)="changeId()">
+                                                @for (item of ids; track item) {
+                                                <mat-option [value]="item">{{item}}</mat-option>
+                                                }
+                                            </mat-select>
+                                        </mat-form-field>
+                                        }
+                                        <br>
+                                        @if(showRequisition){
+                                        <mat-form-field class="example-form-field" appearance="outline" class="nInput">
+                                            <mat-label>N° de entrada</mat-label>
+                                            <input matInput type="number" [formControl]="searchInput"
+                                                autocomplete="off">
+                                            @if (searchInput.value) {
+                                            <button matSuffix matIconButton aria-label="Clear"
+                                                (click)="searchInput.setValue('')">
+                                                <mat-icon>close</mat-icon>
+                                            </button>
+                                            }
+                                        </mat-form-field>
+                                        }
+                                    </div>
+                                    <div class="requisition_info">
+                                        @if(showRequisition){
+                                        <p><span>Fecha de requisición:</span> {{requisition.date | fechaEs}}</p>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                @defer {
+                                <products-component [typeData]="typeData" class="cont1"></products-component>
+                                }
+                            </div>
+                            @if(showRequisition){
+                            <div class="upload-container">
+                                <div>
+                                    <button matButton="outlined" (click)="fileInput.click()"
+                                        [disabled]="idSelected === 0">
+                                        Anexar imagen
+                                    </button>
+                                    <button matButton="filled" (click)="onSaveImage()"
+                                        [disabled]="!selectedFile">Guardar
+                                        imagen</button>
+                                    <input type="file" #fileInput (change)="onFileSelected($event)" hidden />
+
+                                    @if (previewUrl) {
+                                    <div class="preview">
+                                        <img [src]="previewUrl" (error)="handleErrorImage($event)" width="500px"
+                                            alt="Vista previa de la imagen" />
+                                    </div>
+                                    }
+                                </div>
+                            </div>
+                            }
+                        </div>
+
+                        <div class="container_options">
+                            <div class="option1">
+                                <h4>Salida de mercancía</h4>
+                                <img src="assets/output.png" width="50px" (click)="onOutput()">
+                            </div>
+                            <div class="btns">
+                                <button matFab extended class="btn-clean" (click)="cleanNewMerch()">
+                                    <mat-icon>delete_sweep</mat-icon>
+                                    Limpiar
+                                </button>
+                                <br>
+                                <button matFab extended (click)="saveNewMerch()">
+                                    <mat-icon>save</mat-icon>
+                                    Guardar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+                @if (bajas) {
+                <div class="bajas" @fadeInOut>
+                    <h2 style="text-align: center;">Salida de mercancia</h2>
+                    <div class="altas-header">
+                        <button matFab extended aria-label="Buscar" class="btn-search" (click)="openDialog()">
+                            <mat-icon>search</mat-icon>
+                            Buscar
+                        </button>
+                    </div>
+
+                    <div class="altas-container">
+
+                        @defer {
+                        <div class="tableOutput">
+                            <table mat-table [dataSource]="dataSource" matSort>
+
+                                <ng-container matColumnDef="name">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="application">
+                                    <th mat-header-cell *matHeaderCellDef> Applicación </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.application}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="description">
+                                    <th mat-header-cell *matHeaderCellDef> Presentación </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{element.description}}
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="amount">
+                                    <th mat-header-cell *matHeaderCellDef> Existencia Actual</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{element.amount}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- <ng-container matColumnDef="unit_for_product">
+                                    <th mat-header-cell *matHeaderCellDef> Cantidad por producto </th>
+                                    <td mat-cell *matCellDef="let element" (click)="changeUnitForProduct(element.id)"
+                                        class="column_unit"> {{element.unit_for_product}}</td>
+                                </ng-container> -->
+
+                                <ng-container matColumnDef="unit">
+                                    <th mat-header-cell *matHeaderCellDef> Unidad de medida </th>
+                                    <td mat-cell *matCellDef="let element" class="td-map"> {{element.unit}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="amount_output">
+                                    <th mat-header-cell *matHeaderCellDef> Cantidad de salida </th>
+                                    <td mat-cell *matCellDef="let element" class="amount_output"
+                                        (click)="changeOutput(element.id)"> {{element.amountOutput}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="sobra">
+                                    <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Sobrará </th>
+                                    <td mat-cell *matCellDef="let element" class="left"> {{element.left}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="delete">
+                                    <th mat-header-cell *matHeaderCellDef style="text-align: center;"> - </th>
+                                    <td mat-cell *matCellDef="let element" (click)="removeItem(element.id)"
+                                        class="row_delete"> <mat-icon>delete</mat-icon> </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="columnsOutput"></tr>
+                                <tr mat-row *matRowDef="let row; columns: columnsOutput" class="row"></tr>
+                            </table>
+                            <mat-paginator [pageSizeOptions]="[5, 10, 15]" [pageSize]="10"
+                                showFirstLastButtons></mat-paginator>
+                        </div>
+                        }
+
+                        <div class="altas-options">
+                            <div class="option1">
+                                <h4>Altas de mercancia</h4>
+                                <img src="assets/input.png" width="50px" (click)="onInput()">
+                            </div>
+                            <div class="btns">
+                                <button matFab extended class="btn-clean" (click)="cleanNewMerch()">
+                                    <mat-icon>delete_sweep</mat-icon>
+                                    Limpiar
+                                </button>
+                                <br>
+                                <button matFab extended (click)="saveNewMerch()">
+                                    <mat-icon>save</mat-icon>
+                                    Guardar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+            </ng-template>
+        </mat-tab>
+        <mat-tab label="Salida general">
+            <div class="output_general">
+                <h2 style="text-align: center;">Salida de mercancia general</h2>
+                <div class="header-general">
+                    <button matFab extended (click)="openDialogBajaGeneral()">
+                        <mat-icon>search</mat-icon>
+                        Buscar Producto
+                    </button>
+                    <button matFab extended style="background-color:green; color: white" (click)="openDialogEmpl()">
+                        <mat-icon>search</mat-icon>
+                        Buscar empleado
+                    </button>
+                    <button matFab extended style="background-color:blue; color: white;" (click)="openDialogVehicle()">
+                        <mat-icon>search</mat-icon>
+                        Buscar Vehiculo
+                    </button>
+                </div>
+                <div class="output_body">
+                    <div class="outout_data">
+                        <div>
+                            <div>
+                                @if (output_vehicle) {
+                                <p style="font-weight: 600;">Vehiculo:
+                                    <span style="font-weight: 400;">
+                                        {{output_vehicle.economic_number}}
+                                        {{output_vehicle.type}}
+                                    </span>
+                                </p>
+                                }
+                            </div>
+                            <div>
+                                @if (output_employed){
+                                <p style="font-weight: 600;">Empleado:
+                                    <span style="font-weight: 400;">{{output_employed.name}}</span>
+                                </p>
+                                }
+                            </div>
+                            <div>
+                                <p style="font-weight: 600;">Productos</p>
+                                @for (item of output_product; track $index) {
+                                <p style="font-weight: 400;">
+                                    <button matIconButton (click)="deleteItem(item.id)">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                    {{item.name}} {{item.description}}
+                                    <input type="number" placeholder="Cantidad" value=""
+                                        style="width: 75px; margin-left: 10px;" [(ngModel)]="item.out">
+                                </p>
+                                }
+                            </div>
+                        </div>
+                        <div>
+                            <mat-form-field style="width: 300px; height: 150px; margin-top: 20px;">
+                                <mat-label>¿Para qué y en que sector se usara?</mat-label>
+                                <textarea matInput [(ngModel)]="description"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="output_actions" style="text-align: center; margin: 30px;">
+                        <button matButton="filled" (click)="save()">
+                            Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+        }
+
+        <mat-tab label="Agregar un nuevo producto">
+            <product-new-update></product-new-update>
+        </mat-tab>
+
+        @if(inve){
+        <mat-tab label="Inventariar">
+            <ng-template matTabContent>
+                <div class="inv-body">
+                    <div style="display: flex; justify-content: space-between;">
+                        <div class="download">
+                            <h2 style="text-align: center;">Formato para subir inventario a un rancho</h2>
+                            <p style="text-align: start;">
+                                Este formato tiene la siguiente estructura:<br>
+                                - <span style="font-weight: 600;">Id:</span> Identificador único para anexarlo a la base
+                                de datos<br>
+                                - <span style="font-weight: 600;">Name:</span> Nombre del producto, es referencial para
+                                buscar en su inventario<br>
+                                - <span style="font-weight: 600;">Description:</span> Descripción del producto,
+                                igualmente es referencial<br>
+                                - <span style="font-weight: 600;">Stock:</span> Existencia actual del producto
+                                <br><br>
+                            </p>
+                            <button matButton="filled" (click)="downloadFormat()">Descargar formato</button>
+                        </div>
+
+                        <div class="upload">
+                            <h2>¿Como subir el formato?</h2>
+                            <p style="text-align: start;">
+                                1- Antes que nada, llene el formato descargado (Importante seguir el formato)<br>
+                                2- Seleccione un rancho al cual subirá el inventario <br>
+                                3- Presionar el botón “Subir Excel” <br>
+                                4- Confirmar dialogo <br><br>
+                                ¡IMPORTANTE! <br>
+                                Si se sube un Excel a un rancho inventariado, se tomará los nuevos valores del
+                                Excel.<br><br>
+
+                            </p>
+                            <mat-form-field>
+                                <mat-label>Selecione un rancho</mat-label>
+                                <mat-select [(value)]="currentRanch"> <!-- (selectionChange)="changeProducts()" -->
+                                    @for (item of ranchs; track item) {
+                                    <mat-option [value]="item">{{item.name}}</mat-option>
+                                    }
+                                </mat-select>
+                            </mat-form-field>
+                            <br>
+                            <button matButton="outlined" (click)="input.click()">Subir Excel</button>
+                            <input type="file" (change)="onFileChange($event)" accept=".xlsx, .xls"
+                                style="display: none;" #input />
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </mat-tab>
+        }
+
+    </mat-tab-group>
+</div>

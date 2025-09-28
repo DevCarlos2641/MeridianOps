@@ -1,0 +1,38 @@
+<div class="body">
+    <div class="user-card">
+        <label for="colorPicker">Selecciona un color para la barra superior </label>
+        <input id="colorPicker" type="color" [(ngModel)]="selectedColor" (input)="change()">
+        <div class="card-content">
+            <input type="file" accept="image/*" #fileInput (change)="onImageSelected($event)" style="display: none;" />
+            <img [src]="fallbackUrl" alt="{{ user.name }}"
+                class="w-16 h-16 rounded-full object-cover border border-gray-300 shadow-sm"
+                (click)="fileInput.click()" />
+            <h3 (click)="getAttribute('Name', 'Ingrese una nueva posición', user.name)">{{user.name}}</h3>
+            <p><span>Empresa: </span>{{user.enterprise_name}}</p>
+            <p><span>Rancho: </span>{{user.ranch_name}}</p>
+
+            <p (click)="getAttribute('Posición', 'Ingrese una nueva posición', user.position)">
+                <span>Posición: </span>{{user.position}}
+            </p>
+
+            <p (click)="getAttribute('Email', 'Ingrese un nuevo email', user.email)">
+                <span>Email: </span> {{user.email}}
+            </p>
+
+            <p (click)="getAttribute('Teléfono', 'Ingrese un nuevo teléfono', user.phone)">
+                <span>Teléfono: </span> {{user.phone}}
+            </p>
+
+            <p><span>Rol: </span> {{getRole(user.role)}}</p>
+        </div>
+        <div class="btns">
+            <button matMiniFab (click)="onNewPassword()">
+                <mat-icon>security</mat-icon>
+            </button>
+            <button matFab extended (click)="onSave()">
+                <mat-icon>save</mat-icon>
+                Guardar
+            </button>
+        </div>
+    </div>
+</div>

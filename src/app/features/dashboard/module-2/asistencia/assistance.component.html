@@ -1,0 +1,29 @@
+<div class="body">
+
+    <div class="form" @fadeInOut>
+        <p>MeridianOps</p>
+        <h3>Registro de Asistencia</h3>
+
+        <form (submit)="registrarAsistencia(); $event.preventDefault()" class="inputs">
+            <mat-form-field appearance="outline" class="input">
+                <mat-label>Username</mat-label>
+                <input matInput type="text" placeholder="Username" [formControl]="username" required>
+                <mat-icon matSuffix>person_pin</mat-icon>
+            </mat-form-field>
+            <br>
+            <mat-form-field appearance="outline" class="input">
+                <mat-label>Contraseña</mat-label>
+                <input matInput [type]="showPassword ? 'text' : 'password'" placeholder="Contraseña" [formControl]="password" required>
+                <mat-icon type="button" (click)="togglePassword()" matSuffix>remove_red_eye</mat-icon>
+            </mat-form-field>
+            <br>
+            <button matFab extended type="submit" [disabled]="loading">
+                Registrar
+                <mat-icon>check_circle_outline</mat-icon>
+            </button>
+        </form>
+        @if (error) {
+        <p style="color: red;">{{ error }}</p>
+        }
+    </div>
+</div>

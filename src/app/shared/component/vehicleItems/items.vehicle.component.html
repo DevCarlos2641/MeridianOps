@@ -1,0 +1,30 @@
+<div class="body">
+    <div class="items">
+        @for (item of items; track $index) {
+        <div class="item">
+            <p>{{item.name}}</p>
+            <button matIconButton (click)="deleteItem($index)">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+        <mat-divider></mat-divider>
+        }
+    </div>
+    <div class="input">
+        <mat-form-field appearance="outline">
+            <mat-label>Servicios</mat-label>
+            <textarea type="text" matInput [formControl]="formControl" [matAutocomplete]="autoApplys" #myInput></textarea>
+            <mat-autocomplete #autoApplys="matAutocomplete">
+                @for(option of filteredServices$ | async; track option){
+                <mat-option [value]="option">
+                    {{ option }}
+                </mat-option>
+                }
+            </mat-autocomplete>
+        </mat-form-field>
+        <button matMiniFab style="margin-left: 20px;" (click)="addItem()">
+            <mat-icon>send</mat-icon>
+        </button>
+    </div>
+    <button matButton="filled" (click)="finished()">Finalizar</button>
+</div>

@@ -1,0 +1,155 @@
+.body {
+    padding: 10px;
+    height: auto;
+    width: 98%;
+    display: flex;
+}
+
+.container {
+    width: 85%;
+}
+
+.comments {
+    margin: 0;
+    text-align: center;
+    height: 80vh;
+    width: 15%;
+
+    .text {
+        margin-bottom: 5px;
+        height: 70vh;
+        overflow-y: auto;
+    }
+
+    .input-text {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 10vh;
+
+        button {
+            margin: 10px
+        }
+    }
+}
+
+.header-actions {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+}
+
+.header-2 {
+    display: flex;
+    justify-content: space-around;
+
+    .header-supplier {
+        text-align: center;
+        flex-wrap: 1;
+    }
+    .header-text {
+        text-align: start;
+        flex-wrap: 1;
+        font-size: 1.05em;
+        border-radius: 10px;
+        transition: transform 300ms ease;
+        p {
+            margin: 5px;
+            font-weight: 500;
+        }
+        span {
+            font-weight: lighter;
+        }
+        div {
+            margin: 10px;
+        }
+    }
+}
+
+.row-hability {
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.row-hability:hover {
+    background-color: rgba(0, 221, 129, 0.61);
+}
+
+.row-disabled {
+    cursor: pointer;
+    user-select: none;
+    background-color: rgba(253, 112, 112, 0.205);
+}
+
+.table {
+    height: auto;
+    overflow-y: auto;
+    margin: 10px;
+}
+
+.upload-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    button {
+        margin: 20px;
+    }
+}
+
+.preview img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.input-how-many {
+    text-align: center;
+    font-size: large;
+}
+
+.inputs-fiscal {
+    margin: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.input-iva {
+    text-align: center;
+}
+
+.avocats:hover {
+    background-color: #c9a9929f;
+}
+
+.avoago:hover {
+    background-color: #d091f78c;
+}
+
+.meridian-ops:hover {
+    background-color: #0c4f914d;
+}
+
+.agronev:hover {
+    background-color: #9beea793;
+}
+
+.avocats {
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.avoago {
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.meridian-ops {
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.agronev {
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}

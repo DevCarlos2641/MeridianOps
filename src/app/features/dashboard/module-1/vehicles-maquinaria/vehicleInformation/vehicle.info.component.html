@@ -1,0 +1,249 @@
+<div>
+    <button class="btnBack" matButton="elevated" (click)="back()"> <mat-icon>arrow_back</mat-icon> Regresar</button>
+    <div class="body">
+        @if (vouchersContainer) {
+        <div class="container" @rowAnim>
+            <h2 style="text-align: center;">Vales</h2>
+            @if(vouchers$ | async; as vouchers){
+            @for (item of vouchers; track $index) {
+            <div class="container-vouchers" @rowAnim>
+                <mat-accordion>
+                    <mat-expansion-panel hideToggle>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <p><span>Vale: </span>{{item.id_folio}}</p>
+                            </mat-panel-title>
+                            <mat-panel-description>
+                                <p><span>Total: </span>{{item.total | currency}}</p>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <ng-template matExpansionPanelContent>
+                            <p><span>Factura: </span>{{item.id_invoice}}</p>
+                            <p><span>Provedor: </span>{{item.supplier_name}}</p>
+                            <h3 style="text-align: center;">Servicios</h3>
+                            @if(item.services){
+                            @for (service of item.services; track $index) {
+                            <p style="margin: 0; padding: 0;">* {{service}}</p>
+                            }
+                            }
+                        </ng-template>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            }
+            <p @rowAnim>Total general: {{ totalGeneral$ | async | currency }}</p>
+            }
+        </div>
+        }
+
+        @if (inforamtionContainer) {
+        <div class="container" @rowAnim>
+            <h2 style="text-align: center;">Datos del vehiculo</h2>
+            <div class="assign">
+                <p>
+                    <span style="font-size: x-large; font-weight: 600;">Chofer y/o encargado: </span>
+                    <span style="font-size: x-large; border: solid 1px black; padding: 5px;"> @if (employed) { {{employed.name}} }</span>
+                    <span class="change-employed" (click)="changeEmployed()">Cambiar</span>
+                    <span class="change-employed" (click)="showVoucher = true">Vale resguardo</span>
+                </p>
+            </div>
+            <div>
+                <form [formGroup]="vehicleForm" class="form-container">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Número económico</mat-label>
+                        <input matInput formControlName="economic_number" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Placa</mat-label>
+                        <input matInput formControlName="plate" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Tipo</mat-label>
+                        <input matInput formControlName="type" />
+                    </mat-form-field>
+
+                    <br>
+
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Marca</mat-label>
+                        <input matInput formControlName="brand" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Modelo</mat-label>
+                        <input matInput formControlName="model" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Serie</mat-label>
+                        <input matInput formControlName="serie_n" />
+                    </mat-form-field>
+
+                    <br>
+
+                    <mat-checkbox formControlName="active">
+                        Vehiculo Activo
+                    </mat-checkbox>
+                    <br>
+                    @if(vehicle$ | async; as vehicle){
+                    @if(vehicle.category === 'vehicle'){
+
+                    <form [formGroup]="rangeForm">
+                        <mat-form-field>
+                            <mat-label>Póliza</mat-label>
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate placeholder="Inicio" formControlName="start">
+                                <input matEndDate placeholder="Fin" formControlName="end">
+                            </mat-date-range-input>
+                            <mat-hint>Rango de validación</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker (closed)="onDateRangeSelected()"></mat-date-range-picker>
+                        </mat-form-field>
+                    </form>
+
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Numero de póliza</mat-label>
+                        <input matInput formControlName="poliza" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Provedor de póliza</mat-label>
+                        <input matInput formControlName="provider" />
+                    </mat-form-field>
+
+                    <form [formGroup]="rangeFormLisense">
+                        <mat-form-field>
+                            <mat-label>Licencia del conductor</mat-label>
+                            <mat-date-range-input [rangePicker]="picker2">
+                                <input matStartDate placeholder="Inicio" formControlName="start">
+                                <input matEndDate placeholder="Fin" formControlName="end">
+                            </mat-date-range-input>
+                            <mat-hint>Rango de validación</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker2
+                                (closed)="onDateRangeSelectedLisense()"></mat-date-range-picker>
+                        </mat-form-field>
+                    </form>
+
+                    }
+                    }
+                    <br>
+                    <button matButton="elevated" class="btnSave" (click)="save()">Guardar</button>
+                </form>
+            </div>
+        </div>
+        }
+
+        @if(vehicle$ | async; as vehicle){
+        <div class="vehicle-card">
+            <div class="vehicle-image">
+                <img [src]="previewUrl" alt="Vehículo" (click)="fileInput.click()" (error)="setDefaultImage()"
+                    crossorigin="anonymous" #image>
+                <input type="file" #fileInput style="display: none;" (change)="onFileSelected($event)" hidden />
+            </div>
+            <div class="vehicle-content">
+                <h3>{{vehicle.type}}</h3>
+                <p>{{vehicle.brand}}</p>
+                <p>{{vehicle.model}}</p>
+                <p>{{vehicle.enterprise.name}}</p>
+                <div class="actions">
+                    <button mat-button="elevated" (click)="getInformation()">Detalles</button>
+                    <button mat-button="elevated" (click)="transfer()">Trasladar</button>
+                    <button mat-button="elevated" (click)="getServices()">Servicios</button>
+                    <button mat-button="elevated" (click)="downloadPdf()">Pdf</button>
+                </div>
+            </div>
+        </div>
+        } @else {
+        <h3>Cargando...</h3>
+        }
+    </div>
+
+    @if(showVoucher){
+    <br>
+    <mat-divider style="margin-left: 50px; margin-right: 50px;"></mat-divider>
+    <br>
+
+    <div style="display: flex; justify-content: center;">
+        <div class="voucher" #content id="content">
+            <div class="voucher-header">
+                <img [src]="urlImage" width="200px">
+                <p style="font-weight: 600;">VALE DE RESGUARDO</p>
+            </div>
+            <div class="employed">
+                <div style="display: flex;">
+                    <div>
+                        <p class="p1">Nombre: </p>
+                        <p class="p1">Puesto: </p>
+                        <p class="p1">Fecha: </p>
+                    </div>
+                    @if (employed) {
+                    <div>
+                        <p class="p2">{{employed.name}}</p>
+                        <p class="p2">{{employed.position}}</p>
+                        <p class="p2">{{date | fechaEs}}</p>
+                    </div>
+                    }
+                </div>
+
+                <p style="font-weight: 600; margin-right: 20px;">Folio: 
+                    <input type="text" style="border: 0; width: 50px; height: 20px; text-align: center;"> 
+                </p>
+
+            </div>
+            <div class="product">
+                <table>
+                    <tr class="headerTr">
+                        <th>VEHICULO</th>
+                        <th>MARCA/MODELO</th>
+                        <th>IME/SERIE</th>
+                        <th>PROVEEDOR</th>
+                        <th>FACTURA</th>
+                        <th style="width: 100px;">IMPORT. U</th>
+                    </tr>
+                    @if (vehicle$ | async; as vehicle) {
+                    <tr>
+                        <td>{{vehicle.type}} {{vehicle.model}}</td>
+                        <td>{{vehicle.brand}}</td>
+                        <td>{{vehicle.serie_n}}</td>
+                        <td><input type="text"></td>
+                        <td><input type="text"></td>
+                        <td><input type="text" [(ngModel)]="price"></td>
+                    </tr>
+                    }
+                </table>
+            </div>
+            <p class="closing">
+                Al firmar el presente vale me comprometo a resguardar y dar un buen uso al equipo que me ha sido
+                asignado.
+                Así mismo a utilizar dicho equipo EXCLUSIVAMENTE para actividades que mi puesto requiere. En caso de
+                robo,
+                extravío o daño al equipo, se hará responsable por una cantidad de:
+                <span style="font-weight: 600;">{{ price }}</span>
+            </p>
+            <div class="firmas">
+                <div>
+                    <p>FIRMA DE QUIEN RECIBE</p>
+                    <br>
+                    <br>
+                    @if(employed){
+                    <p style="font-size: small; border-top: 1px solid black;">{{employed.name}}</p>
+                    }
+                </div>
+                <div>
+                    <p>FIRMA DE QUIEN ENTREGA</p>
+                    <br>
+                    <br>
+                    <p style="font-size: small; border-top: 1px solid black;">RICARDO CACHO SANCHEZ</p>
+                </div>
+            </div>
+            <br>
+        </div>
+        <div style="margin: 30px;"><button matButton="outlined" (click)="generatePDF()">Exportar PDF</button></div>
+    </div>
+    }
+    <br>
+    <br>
+</div>

@@ -1,0 +1,22 @@
+.body {
+    margin: 20px;
+
+    .buttons {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    p {
+        font-size: large;
+        margin: 20px;
+        text-align: center;
+        word-wrap: break-word;
+        white-space: pre-line;
+        overflow-wrap: anywhere;
+    }
+
+    .cancel {
+        color: white;
+        background-color: #730d0d;
+    }
+}

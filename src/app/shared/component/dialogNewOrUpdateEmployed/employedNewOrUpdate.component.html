@@ -1,0 +1,58 @@
+<div class="body">
+    <p class="title">{{title}}</p>
+    <form [formGroup]="employedForm" (ngSubmit)="submitForm()">
+
+        @if(data.mode == 0){
+        <mat-form-field>
+            <mat-label>Empresa</mat-label>
+            <mat-select [(value)]="currentEnterprise">
+                @for (item1 of enterprises; track item1) {
+                <mat-option [value]="item1">{{ item1.name }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        }
+
+        <mat-form-field>
+            <mat-label>Nombre Completo</mat-label>
+            <input matInput autocomplete="off" formControlName="name">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Posición</mat-label>
+            <input matInput autocomplete="off" formControlName="position">
+        </mat-form-field>
+
+        <br>
+
+        <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput autocomplete="off" type="email" formControlName="email">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Teléfono</mat-label>
+            <input matInput autocomplete="off" type="number" formControlName="phone">
+        </mat-form-field>
+
+        <br>
+
+        <mat-checkbox formControlName="active">
+            Activo
+        </mat-checkbox>
+
+        <br>
+
+        <mat-form-field>
+            <mat-label>Username</mat-label>
+            <input matInput autocomplete="off" formControlName="username">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Contraseña</mat-label>
+            <input matInput autocomplete="off" formControlName="password" type="password">
+        </mat-form-field>
+        <br>
+        <button mat-raised-button color="primary" type="submit">Guardar</button>
+    </form>
+</div>

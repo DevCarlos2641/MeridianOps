@@ -1,0 +1,140 @@
+.table {
+    margin: 30px;
+    display: flex;
+
+    .products {
+        width: 70%;
+    }
+
+    .cart-container {
+        height: 65vh;
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+        /* ← Dirección vertical */
+        align-items: center;
+        /* ← Centra horizontalmente */
+        text-align: center;
+    }
+
+    .cart{
+        width: 30%;
+        display: block;
+        height: 75vh;
+
+        .btn-save{
+            height: 5vh;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            .clean{
+                background-color: #d40902;
+                color: white;
+            }
+        }
+    }
+
+    .table-header{
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.card {
+    margin: 10px;
+    width: 300px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    /* ← Elevación */
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+
+    .item_title {
+        margin: 0;
+        padding: 10px;
+        font-family: 'Times New Roman', Times, serif;
+        font-size: x-large;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+    }
+
+    .card_content {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .comment{
+        color: blue;
+    }
+
+    button {
+        color: #d40902;
+        right: 0;
+    }
+    .card_actions{
+        input{
+            font-size: large;
+            margin-top: 10px;
+            text-align: center;
+            width: 100px;
+        }
+    }
+}
+
+.card:hover {
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.table_history{
+    margin: 30px;
+
+    .table-header{
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.row {
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.row:hover {
+    cursor: pointer;
+    background-color: rgb(211, 211, 211);
+}
+
+.delete_item{
+    mat-icon{
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+}
+
+.delete_item:hover{
+    mat-icon{
+        cursor: pointer;
+        color: red;
+        transform: scale(1.2);
+    }
+}
+
+.cart_item{
+    mat-icon{
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+}
+
+
+.cart_item:hover{
+    mat-icon{
+        cursor: pointer;
+        color: blue;
+        transform: scale(1.2);
+    }
+}

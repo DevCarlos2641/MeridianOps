@@ -1,0 +1,68 @@
+<div class="table">
+    <div class="header-table">
+        <mat-form-field class="example-form-field" appearance="outline" class="nInput">
+            <mat-label>Filtrar</mat-label>
+            <input matInput type="text" [formControl]="searchInput" autocomplete="off">
+            @if (searchInput.value) {
+            <button matSuffix matIconButton aria-label="Clear" (click)="searchInput.setValue('')">
+                <mat-icon>close</mat-icon>
+            </button>
+            }
+        </mat-form-field>
+        @if(!info){
+        <button matButton="filled" (click)="addNew()">
+            Agregar nuevo
+        </button>
+        }
+    </div>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+
+        @for (item of columns; track $index) {
+
+        @if(item === 'economic_number'){
+        <ng-container matColumnDef={{item}}>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="title"> {{ item | traducirColumna }}
+            <td mat-cell *matCellDef="let product"> <!-- (click)="handleUpdate(product.id)" -->
+                <p matBadge="1" matBadgeOverlap="false" style="text-align: center;"
+                    [matBadgeHidden]="!getHiden(product)"> {{product[item]}}</p>
+            </td>
+        </ng-container>
+        }
+        @else if(item === 'responsible'){
+        <ng-container matColumnDef={{item}}>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="title"> {{ item | traducirColumna }}
+            <td mat-cell *matCellDef="let product">
+                @if(product['employed_name']){
+                {{product['employed_name']}}
+                } @else {}
+            </td>
+        </ng-container>
+        }
+        @else if (item === 'info') {
+        <ng-container matColumnDef={{item}}>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="title"> {{ item | traducirColumna }}
+            <td mat-cell *matCellDef="let product" (click)="vehicleInfo(product.id)" class="item-car">
+                <mat-icon> directions_car</mat-icon>
+            </td>
+        </ng-container>
+        }
+        @else {
+        <ng-container matColumnDef={{item}}>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="title"> {{ item | traducirColumna }}
+            <td mat-cell *matCellDef="let product">
+                @if(item === 'active'){
+                {{product[item] | activeStatus}}
+                } @else {
+                {{product[item]}}
+                }
+            </td>
+        </ng-container>
+        }
+        }
+
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns;" class="row" @rowAnim (click)="handleVehicle(row)"
+            class="{{row.enterprise_name | slugify}}"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 15]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+</div>

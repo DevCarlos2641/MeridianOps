@@ -1,0 +1,17 @@
+<div class="body">
+    <mat-form-field>
+        <mat-label>Proveedores</mat-label>
+        <input type="text" matInput [formControl]="formControl" [matAutocomplete]="autoApplys"/>
+        <mat-autocomplete #autoApplys="matAutocomplete">
+            @for(option of filteredSupplier$ | async; track option){
+            <mat-option [value]="option">
+                {{ option }}
+            </mat-option>
+            }
+        </mat-autocomplete>
+    </mat-form-field>
+    <br>
+    <button matMiniFab (click)="submit()">
+        <mat-icon>check_circle</mat-icon>
+    </button>
+</div>

@@ -1,0 +1,11 @@
+<div class="body">
+    <app-requisition-full type="incomplete"></app-requisition-full>
+    <div class="export">
+        <button matButton="outlined" (click)="exportExcel(0, 'Reporte de requisiciones')">Exportar
+            Requisiciones</button>
+        <button matButton="outlined" (click)="exportExcel(1, 'Reporte de Productos')">Exportar Productos</button>
+        @if(role == 5){
+        <button matButton="outlined" (click)="exportExcel(2, 'Reporte de Vehiculos')">Exportar Vehiculos</button>
+        }
+    </div>
+</div>

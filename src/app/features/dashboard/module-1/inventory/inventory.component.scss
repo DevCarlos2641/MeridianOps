@@ -1,0 +1,254 @@
+.body {
+    margin: 10px;
+}
+
+
+.content {
+    padding: 20px;
+    display: flex;
+    width: 95%;
+    justify-content: space-between;
+    .container{
+        width: 80%;
+        height: 72vh;
+        overflow-y: auto;
+
+        .upload-container{
+            text-align: center;
+            button{
+                margin: 10px;
+                margin-bottom: 30px;
+            }
+        }
+    }
+
+    .container_options{
+        width: 20%;
+        text-align: center;
+        .btns{
+            button{
+                margin-top: 30px;
+            }
+        }
+    }
+
+    .altas-header {
+        width: 100%;
+        text-align: center;
+        
+        mat-form-field{
+            width: 150px;
+        }
+
+        .searchRq {
+            display: flex;
+            .search_inputs{
+                margin-top: 20px;
+                text-align: start;
+                width: 30%;
+            }
+            .requisition_info{
+                width: 70%;
+                font-size: large;
+                span{
+                    font-weight: 600;
+                }
+            }
+            button{
+                margin-left: 20px;
+            }
+        }
+
+        .header-btn {
+            width: 100%;
+            text-align: start;
+        }
+    }
+
+    .altas-container {
+        margin: 10px;
+        display: flex;
+
+        .cont1 {
+            height: auto;
+            width: 80%;
+        }
+
+        .altas-options {
+            width: 20%;
+            height: 70vh;
+            text-align: center;
+
+            .btn-clean {
+                color: white;
+                background-color: rgb(194, 0, 0);
+            }
+
+            button {
+                margin-top: 30px;
+            }
+
+            .option1 {
+                cursor: pointer;
+                height: 50%;
+            }
+
+            .btn {
+                height: 50%;
+            }
+        }
+    }
+}
+
+.bajas {
+    margin: 20px;
+    height: 80vh;
+
+    .btn-search {
+        margin-left: 10px;
+    }
+
+    .altas-header {
+        width: 100%;
+        text-align: center;
+    }
+
+    .altas-container {
+        margin: 10px;
+        width: 100%;
+        display: flex;
+
+        .tableOutput {
+            width: 90%;
+        }
+
+        .cont1 {
+            height: auto;
+            width: 80%;
+        }
+
+        .altas-options {
+            width: 20%;
+            height: 70vh;
+            text-align: center;
+
+            .btn-clean {
+                color: white;
+                background-color: rgb(194, 0, 0);
+            }
+
+            button {
+                margin-top: 30px;
+            }
+
+            .option1 {
+                cursor: pointer;
+                height: 50%;
+            }
+
+            .btn {
+                height: 50%;
+            }
+        }
+    }
+}
+
+.btn_other_local {
+    margin: 20px;
+}
+
+.sections {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 20px;
+    height: 80vh;
+
+    .section1 {
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+        padding: 30px;
+        border-radius: 20px;
+        text-align: center;
+        margin: 20px;
+    }
+
+    .section1:hover {
+        transform: scale(1.1);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+}
+
+.tableOutput {
+    th {
+        text-align: center;
+    }
+
+    td {
+        color: black;
+        text-align: center;
+    }
+}
+
+.column_unit {
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    user-select: none;
+}
+
+.column_unit:hover {
+    background-color: rgba(151, 151, 151, 0.26);
+    border-radius: 10px;
+}
+
+.amount_output {
+    background-color: rgb(255, 128, 128);
+    color: black;
+    font-weight: 500;
+    cursor: pointer;
+    user-select: none;
+}
+
+.left {
+    color: black;
+    font-weight: 500;
+    background-color: rgb(154, 255, 154);
+}
+
+.row_delete {
+    cursor: pointer;
+    user-select: none;
+    cursor: pointer;
+    user-select: none;
+}
+
+.output_general{
+    padding: 20px;
+}
+
+.header-general{
+    display: flex;
+    justify-content: space-around;
+}
+
+.output_body{
+    padding: 20px;
+}
+
+.outout_data{
+    display: flex;
+    justify-content: space-around;
+}
+
+.inv-body{
+    padding: 20px;
+}
+
+.download{
+    text-align: center;
+}
+
+.upload{
+    text-align: center;
+}

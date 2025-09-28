@@ -1,0 +1,205 @@
+<div class="body">
+    <h2 style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; text-align: center;">
+        Asignación de Vale</h2>
+    <div class="header">
+
+        <div class="header-actions">
+            <button matFab extended (click)="backToRequisitions()">
+                <mat-icon>keyboard_backspace</mat-icon>
+                Regresar a las requisiciones
+            </button>
+            @if(products && !mantt){
+            <mat-form-field>
+                <mat-label>N° Vale</mat-label>
+                <input matInput type="text" [(ngModel)]="nVoucher" [disabled]="activeFolio">
+            </mat-form-field>
+            @if(!activeFolio){
+            <mat-form-field>
+                <mat-label>N° Vale (Opcional)</mat-label>
+                <input matInput type="text" [(ngModel)]="nVoucherExtra">
+            </mat-form-field>
+            }
+            }
+            @if(vehicles || mantt){
+            <div class="input-vehicle">
+                <mat-form-field>
+                    <mat-label>Numero</mat-label>
+                    <input matInput type="text" [(ngModel)]="nService" placeholder="BA-123">
+                    <mat-hint>BA: Vale administrativo<br>BC: Vale de campo<br>BS: Vale de servicio</mat-hint>
+                </mat-form-field>
+                <mat-form-field style="margin-left: 20px;">
+                    <mat-label>N° Vale (Opcional)</mat-label>
+                    <input matInput type="text" [(ngModel)]="nVoucherExtra">
+                </mat-form-field>
+            </div>
+            }
+            @if (activeFolio) {
+            <div>
+                <mat-form-field disabled="!activeFolio">
+                    <mat-label>N° Folio</mat-label>
+                    <input matInput type="text" [(ngModel)]="nFolio" [disabled]="!activeFolio" placeholder="2025-00">
+                </mat-form-field>
+                <mat-checkbox [(ngModel)]="activeFolio" [disabled]="activeFolio"></mat-checkbox>
+            </div>
+            }
+            <button matButton="filled" class="btn-save" (click)="saveVoucher()">Guardar</button>
+        </div>
+        <div class="header-2">
+            <div class="header-text">
+                <div>
+                    <p>N° Requisicón: <span>{{requisition.id_requisition}}</span></p>
+                    <p>Fecha: <span>{{formatDateEs(requisition.date)}}</span></p>
+                    <p>Empresa: <span>{{requisition.enterprise_name}}</span></p>
+                    <p>Rancho: <span>{{requisition.ranch_name}}</span></p>
+                </div>
+                <div>
+                    <p>Estado: <span>{{getStatus(requisition.status)}}</span></p>
+                    <p>Prioridad: <span>{{getPriority(requisition.priority)}}</span></p>
+                    <p>Comentario:
+                        <span>
+                            @if (requisition.comment == "") {
+                            Sin comentarios
+                            } @else {
+                            {{requisition.comment}}
+                            }
+                        </span>
+                    </p>
+                </div>
+            </div>
+            <div class="header-supplier">
+                <mat-form-field>
+                    <mat-label>Proveedores</mat-label>
+                    <input type="text" matInput [formControl]="formControl" [matAutocomplete]="autoProv" />
+                    <mat-autocomplete #autoProv="matAutocomplete">
+                        @for(option of filteredSupplier$ | async; track option){
+                        <mat-option [value]="option">
+                            {{ option }}
+                        </mat-option>
+                        }
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+
+    @if(products){
+    <div class="table">
+        <table mat-table [dataSource]="dataSource" matSort>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+                <td mat-cell *matCellDef="let element" (click)="updateProduct(element.id_product)"> {{element.name}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="house_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Casa comercial </th>
+                <td mat-cell *matCellDef="let element"> {{element.house_name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="description_pd">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripción </th>
+                <td mat-cell *matCellDef="let element"> {{element.description_pd}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="amount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad </th>
+                <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="unit">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Unidad de medida </th>
+                <td mat-cell *matCellDef="let element"> {{element.unit}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="description_rq">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Comentarios </th>
+                <td mat-cell *matCellDef="let element">
+                    @if (element.description_rq == "") {
+                    Sin comentarios
+                    } @else {
+                    {{element.description_rq}}
+                    }
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="supplier">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Proveedor </th>
+                <td mat-cell *matCellDef="let element" class="supplier">
+                    <mat-checkbox [checked]="getChecked(element.id_product)"
+                        [disabled]="getDisabled(element.id_product)"
+                        (change)="update($event.checked, element.id_product)">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="guard">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> ¿Resguardo? </th>
+                <td mat-cell *matCellDef="let element" class="supplier">
+                    <mat-checkbox [checked]="getCheckedGuard(element.id_product)"
+                        [disabled]="getDisabled(element.id_product)"
+                        (change)="updateGuard($event.checked, element.id_product)">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="arrived">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Legaron... </th>
+                <td mat-cell *matCellDef="let element"> {{element.arrived}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="missing">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Faltan... </th>
+                <td mat-cell *matCellDef="let element"> {{element.amount-element.arrived}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columns"></tr>
+            <tr mat-row *matRowDef="let row; columns: columns" class="row" [ngClass]="getClassItem(row.id_product)">
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 15]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+    </div>
+    }
+    @if(vehicles) {
+    <div class="table">
+        <table mat-table [dataSource]="dataSource" matSort>
+
+            <ng-container matColumnDef="economic">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Numero economico </th>
+                <td mat-cell *matCellDef="let element"> {{element.economic_number}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
+                <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="model">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Modelo </th>
+                <td mat-cell *matCellDef="let element"> {{element.model}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="services">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Servicios </th>
+                <td mat-cell *matCellDef="let element">
+                    @for(item of element.services; track item){
+                    <div style="display: flex;" [ngClass]="getClassItemV(element.id_vehicle, item.id_service_vehicle)">
+                        <mat-checkbox style="margin-right: 20px;"
+                            [checked]="getCheckedVehicle(item.id_service_vehicle, element.id_vehicle)"
+                            [disabled]="getDisabledVehicle(item.id_service_vehicle, element.id_vehicle)"
+                            (change)="updateVehicle($event.checked, item.id_service_vehicle, element.id_vehicle)">
+                        </mat-checkbox>
+                        <p>*{{item.name}}</p>
+                    </div>
+                    }
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columns2"></tr>
+            <tr mat-row *matRowDef="let row; columns: columns2" class="row">
+            </tr>
+        </table>
+        <mat-paginator #paginator2 [pageSizeOptions]="[5, 10, 15]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+    </div>
+    }
+</div>

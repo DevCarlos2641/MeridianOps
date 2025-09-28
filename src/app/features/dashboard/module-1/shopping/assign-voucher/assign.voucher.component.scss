@@ -1,0 +1,86 @@
+.body {
+    padding: 10px;
+    height: auto;
+}
+
+.header-actions {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+}
+
+.header-2{
+    display: flex;
+    justify-content: space-between;
+}
+
+.header-supplier{
+    width: 30%;
+}
+
+.header-text {
+    width: 70%;
+    font-size: 1.05em;
+    margin: 5px;
+    display: flex;
+
+    p {
+        margin: 5px;
+        font-weight: 500;
+    }
+
+    span {
+        font-weight: lighter;
+    }
+
+    div {
+        width: 50%;
+        margin: 10px;
+    }
+}
+
+.supplier:hover {
+    color: rgb(0, 0, 255);
+}
+
+.row {
+    cursor: pointer;
+    user-select: none;
+    color: black;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.table {
+    height: 60vh;
+    overflow-y: auto;
+}
+
+.avocats_h:hover{
+    background-color: #c9a9929f;
+}
+.avoago_h:hover{
+    background-color: #d091f78c;
+}
+.meridian-ops_h:hover{
+    background-color: #0c4f914d;
+}
+.agronev_h:hover{
+    background-color: #9beea793;
+}
+
+.avocats{
+    background-color: #c9a9929f;
+}
+.avoago{
+    background-color: #d091f78c;
+}
+.meridian-ops{
+    background-color: #0c4f914d;
+}
+.agronev{
+    background-color: #9beea793;
+}
+
+.input-vehicle{
+    display: flex;
+}

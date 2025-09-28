@@ -1,0 +1,11 @@
+<div class="body">
+    <p>{{data.message}}</p>
+    <div class="buttons">
+        @if(data.cancel){
+        <button matButton="tonal" (click)="cancel()" class="cancel">Cancelar</button>
+        }
+        @if(data.accept){
+        <button matButton="tonal" (click)="accept()">Aceptar</button>
+        }
+    </div>
+</div>

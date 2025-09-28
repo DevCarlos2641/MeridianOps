@@ -1,0 +1,31 @@
+.body{
+    padding: 20px;
+}
+
+.header{
+    p{
+        font-family: 'Times New Roman', Times, serif;
+        font-size: x-large;
+        font-weight: 600;
+    }
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.btn-export{
+    padding: 10px;
+    text-align: end;
+    button{
+        background-color: #004F4F;
+        margin-right: 20px;
+    }
+}
+
+.td-map{
+    color: rgb(4, 4, 139);
+    cursor: pointer;
+    text-align: center;
+    span{
+        margin: 20px;
+    }
+}

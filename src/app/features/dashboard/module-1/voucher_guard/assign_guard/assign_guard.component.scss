@@ -1,0 +1,167 @@
+.body {
+    padding: 20px;
+    display: flex;
+}
+
+.header {
+    display: flex;
+
+    button {
+        width: 15%;
+    }
+
+    p {
+        width: 85%;
+        text-align: center;
+        font-size: x-large;
+        font-weight: 600;
+    }
+}
+
+.headerTr{
+    th{
+        padding: 5px;
+    }
+    background-color: rgba(167, 167, 167, 0.356);
+}
+
+.voucher {
+    background-color: white;
+    width: 22cm;
+    padding-left: 30px;
+    padding-right: 30px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+
+    .closing {
+        padding-left: 20px;
+        padding-right: 20px;
+        text-align: center;
+    }
+}
+
+.voucher-header {
+    display: flex;
+    align-items: center;
+
+    img {
+        padding: 20px;
+    }
+
+    p {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+.employed {
+    text-align: start;
+    padding-left: 20px;
+    display: flex;
+    justify-content: space-between;
+
+    p {
+        margin: 2px;
+    }
+
+    .p1 {
+        text-align: end;
+        font-weight: 500;
+    }
+
+    .p2 {
+        margin-left: 5px;
+    }
+}
+
+.container2 {
+    text-align: center;
+    width: 80%;
+}
+
+.container {
+    width: 20%;
+    padding-left: 20px;
+    text-align: center;
+    height: 80vh;
+
+    .section1 {
+        height: 70vh;
+    }
+
+    .section2 {
+        height: 10vh;
+    }
+}
+
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+}
+
+.voucher_info {
+    text-align: center;
+}
+
+.product-card {
+    cursor: pointer;
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
+    display: flex;
+    margin-top: 15px;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: box-shadow 0.3s ease;
+
+    &:hover {
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    }
+
+    h2 {
+        font-size: 1.25rem;
+        margin: 0 0 0.5rem;
+        color: #333;
+    }
+
+    .codigo {
+        font-size: 0.9rem;
+        color: #777;
+        margin: 0;
+    }
+
+    .product-precio {
+        margin-top: 1rem;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #2e7d32;
+    }
+}
+
+.product {
+    margin-top: 10px;
+    text-align: start;
+    padding-left: 20px;
+
+    table {
+        width: 100%;
+        text-align: center;
+    }
+
+    input {
+        text-align: center;
+        border: 0;
+        height: 20px;
+        white-space: pre;
+        font: inherit;
+        width: 120px;
+    }
+}
+
+.firmas {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 0;
+}
